@@ -4,5 +4,11 @@
     <string name="app_name">amfontai Notes</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="empty">SOOOOO MANY DICKS</string>
+    <string name="title_activity_note_detail">NoteDetail</string>
+    <string name="subject">Subject</string>
+    <string name="date">Date</string>
+    <string name="content">Enter a note!</string>
+    <string name="save">Save</string>
 
 </resources>

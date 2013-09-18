@@ -22,6 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.amfontai.cmput301asn1.NoteDetail"
+            android:label="@string/title_activity_note_detail"
+            android:parentActivityName="com.amfontai.cmput301asn1.NotesList" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.amfontai.cmput301asn1.NotesList" />
+        </activity>
     </application>
 
 </manifest>
