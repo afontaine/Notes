@@ -1,12 +1,21 @@
 package com.amfontai.cmput301asn1;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.amfontai.cmput301asn1.NotesDb.NotesDbHelper;
 
 public class NoteDetail extends Activity {
+	
+	NotesDbHelper mDb = new NotesDb().new NotesDbHelper(this);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -14,6 +23,31 @@ public class NoteDetail extends Activity {
 		setContentView(R.layout.activity_note_detail);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		Intent intent = getIntent();
+		
+		int id = intent.getIntExtra("com.amfontai.cmput301asn1.id", -1);
+		
+		if(-1 != id) {
+			SQLiteDatabase db = mDb.getReadableDatabase();
+			Cursor cursor;
+			cursor = db.query(NotesDb.TABLE_NAME,
+					new String[] {NotesDb.COLUMN_SUBJECT, NotesDb.COLUMN_DATE, NotesDb.COLUMN_CONTENT},
+					NotesDb._ID + " = ?",
+					new String[] {String.valueOf(id)},
+					null,
+					null,
+					null,
+					"1");
+			
+			cursor.moveToFirst();
+			EditText subject = (EditText) findViewById(R.id.subject);
+			subject.setText(cursor.getString(cursor.getColumnIndex(NotesDb.COLUMN_SUBJECT)));
+			Button date = (Button) findViewById(R.id.date);
+			date.setText(cursor.getString(cursor.getColumnIndex(NotesDb.COLUMN_DATE)));
+			EditText content = (EditText) findViewById(R.id.content);
+			content.setText(cursor.getString(cursor.getColumnIndex(NotesDb.COLUMN_CONTENT)));
+		}
 	}
 
 	/**
