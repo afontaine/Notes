@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -39,10 +40,44 @@ public class NotesList extends ListActivity {
 	}
 	
 	@Override
+	public boolean onOptionsItemSelected(MenuItem menu) {
+		switch(menu.getItemId()) {
+		case R.id.action_add:
+			openNew();
+			return true;
+		case R.id.action_cloud:
+			openWordCloud();
+			return true;
+		case R.id.action_log:
+			openLog();
+			return true;
+		default:
+			return super.onOptionsItemSelected(menu);
+		}
+				
+	}
+	
+	private void openNew() {
+		
+		Intent intent = new Intent(this, NoteDetail.class);
+		startActivity(intent);
+		
+	}
+
+	private void openWordCloud() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void openLog() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Intent intent = new Intent(this, NoteDetail.class);
 		Cursor cursor = (Cursor) getListView().getItemAtPosition(position);
-		int test = cursor.getInt(cursor.getColumnIndex(NotesDb._ID));
 		intent.putExtra("com.amfontai.cmput301asn1.id", cursor.getInt(cursor.getColumnIndex(NotesDb._ID)));
 		startActivity(intent);
 	}

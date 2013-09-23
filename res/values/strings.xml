@@ -14,5 +14,7 @@
     <string name="action_add">Add Note</string>
     <string name="action_cloud">Word Cloud</string>
     <string name="action_log">Stats</string>
+    <string name="title_activity_word_cloud">Word Cloud</string>
+    <string name="title_activity_word_log">WordLog</string>
 
 </resources>

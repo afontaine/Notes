@@ -30,6 +30,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.amfontai.cmput301asn1.NotesList" />
         </activity>
+        <activity
+            android:name="com.amfontai.cmput301asn1.WordCloud"
+            android:label="@string/title_activity_word_cloud"
+            android:parentActivityName="com.amfontai.cmput301asn1.NotesList" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.amfontai.cmput301asn1.NotesList" />
+        </activity>
+        <activity
+            android:name="com.amfontai.cmput301asn1.WordLog"
+            android:label="@string/title_activity_word_log"
+            android:parentActivityName="com.amfontai.cmput301asn1.NotesList" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.amfontai.cmput301asn1.NotesList" />
+        </activity>
     </application>
 
 </manifest>

@@ -1,5 +1,8 @@
 package com.amfontai.cmput301asn1;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,12 +13,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.amfontai.cmput301asn1.NotesDb.NotesDbHelper;
 
 public class NoteDetail extends Activity {
 	
 	NotesDbHelper mDb = new NotesDb().new NotesDbHelper(this);
+	
+	@SuppressLint("SimpleDateFormat")
+	SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,8 @@ public class NoteDetail extends Activity {
 		Intent intent = getIntent();
 		
 		int id = intent.getIntExtra("com.amfontai.cmput301asn1.id", -1);
+		
+		Button date = (Button) findViewById(R.id.date);
 		
 		if(-1 != id) {
 			SQLiteDatabase db = mDb.getReadableDatabase();
@@ -43,11 +50,13 @@ public class NoteDetail extends Activity {
 			cursor.moveToFirst();
 			EditText subject = (EditText) findViewById(R.id.subject);
 			subject.setText(cursor.getString(cursor.getColumnIndex(NotesDb.COLUMN_SUBJECT)));
-			Button date = (Button) findViewById(R.id.date);
+			
 			date.setText(cursor.getString(cursor.getColumnIndex(NotesDb.COLUMN_DATE)));
 			EditText content = (EditText) findViewById(R.id.content);
 			content.setText(cursor.getString(cursor.getColumnIndex(NotesDb.COLUMN_CONTENT)));
 		}
+		else
+			date.setText(mFormat.format(new Date()));
 	}
 
 	/**
