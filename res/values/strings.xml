@@ -16,5 +16,9 @@
     <string name="action_log">Stats</string>
     <string name="title_activity_word_cloud">Word Cloud</string>
     <string name="title_activity_word_log">WordLog</string>
+    <string name="total_characters">Total number of characters: </string>
+    <string name="total_words">Total number of words:</string>
+    <string name="total_logs">Total number of entries:</string>
+    <string name="top_one_hundred">Top one hundred words: </string>
 
 </resources>

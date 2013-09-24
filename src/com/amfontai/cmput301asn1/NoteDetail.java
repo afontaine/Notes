@@ -115,6 +115,9 @@ public class NoteDetail extends Activity implements DatePickerDialog.OnDateSetLi
 		return super.onOptionsItemSelected(item);
 	}
 	
+	public void saveNote(View v) {
+		finish();
+	}
 	
 	public void saveNote() {
 		SQLiteDatabase db = mDb.getWritableDatabase();
