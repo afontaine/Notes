@@ -16,11 +16,14 @@ public class NotesList extends ListActivity {
 	
 	NotesDbHelper mDb = new NotesDb().new NotesDbHelper(this);
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_notes_list);
-		
+	}
+	
+	private void listNotes() {
 		Cursor cursor = mDb.getNotesByDate();
 		
 		setListAdapter(new SimpleCursorAdapter(
@@ -57,6 +60,13 @@ public class NotesList extends ListActivity {
 				
 	}
 	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		listNotes();
+		
+	}
+	
 	private void openNew() {
 		
 		Intent intent = new Intent(this, NoteDetail.class);
@@ -65,12 +75,14 @@ public class NotesList extends ListActivity {
 	}
 
 	private void openWordCloud() {
-		// TODO Auto-generated method stub
+		Intent intent = new Intent(this, WordCloud.class);
+		startActivity(intent);
 		
 	}
 
 	private void openLog() {
-		// TODO Auto-generated method stub
+		Intent intent = new Intent(this, WordLog.class);
+		startActivity(intent);
 		
 	}
 
