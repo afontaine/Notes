@@ -8,31 +8,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-
-import com.amfontai.cmput301asn1.NotesDb.NotesDbHelper;
 
 public class NotesList extends ListActivity {
 	
-	NotesDbHelper mDb = new NotesDb().new NotesDbHelper(this);
-
+	NotesDb mDb = new NotesDb(NotesDb.READ, this);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_notes_list);
+		listNotes();
 	}
 	
-	private void listNotes() {
-		Cursor cursor = mDb.getNotesByDate();
-		
-		setListAdapter(new SimpleCursorAdapter(
-				this,
-				android.R.layout.two_line_list_item,
-				cursor,
-				new String[] {NotesDb.COLUMN_SUBJECT, NotesDb.COLUMN_DATE},
-				new int[] {android.R.id.text1, android.R.id.text2},
-				0));
+	private void listNotes() {		
+		setListAdapter(mDb.listNotes(this));
 	}
 
 	@Override

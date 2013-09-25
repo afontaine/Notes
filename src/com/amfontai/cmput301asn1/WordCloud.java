@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
 import android.support.v4.app.NavUtils;
 
 public class WordCloud extends Activity {
+		
+	NotesDb mDb = new NotesDb(NotesDb.READ, this);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -14,6 +17,16 @@ public class WordCloud extends Activity {
 		setContentView(R.layout.activity_word_cloud);
 		// Show the Up button in the action bar.
 		setupActionBar();
+	}
+	
+	protected void onResume() {
+		super.onResume();
+		
+		WebView web = (WebView) findViewById(R.id.cloud);
+		
+		String html = mDb.getWordCloud();
+				
+		web.loadData(html, "text/html", null);
 	}
 
 	/**

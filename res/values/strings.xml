@@ -2,10 +2,8 @@
 <resources>
 
     <string name="app_name">amfontai Notes</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="empty">SOOOOO MANY DICKS</string>
-    <string name="title_activity_note_detail">NoteDetail</string>
+    <string name="empty">Why not make some notes?</string>
+    <string name="title_activity_note_detail">Edit Note</string>
     <string name="subject">Subject</string>
     <string name="date">Date</string>
     <string name="content">Enter a note!</string>
@@ -15,10 +13,10 @@
     <string name="action_cloud">Word Cloud</string>
     <string name="action_log">Stats</string>
     <string name="title_activity_word_cloud">Word Cloud</string>
-    <string name="title_activity_word_log">WordLog</string>
+    <string name="title_activity_word_log">Word Log</string>
     <string name="total_characters">Total number of characters: </string>
-    <string name="total_words">Total number of words:</string>
-    <string name="total_logs">Total number of entries:</string>
+    <string name="total_words">Total number of words: </string>
+    <string name="total_logs">Total number of entries: </string>
     <string name="top_one_hundred">Top one hundred words: </string>
 
 </resources>

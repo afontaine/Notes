@@ -4,16 +4,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -22,14 +18,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-
-import com.amfontai.cmput301asn1.NotesDb.NotesDbHelper;
+import com.amfontai.cmput301asn1.NotesDb.Note;
 
 @SuppressLint("SimpleDateFormat")
 public class NoteDetail extends Activity implements DatePickerDialog.OnDateSetListener {
 	
-	NotesDbHelper mDb = new NotesDb().new NotesDbHelper(this);
-	int mId;
+	private NotesDb mDb = new NotesDb(NotesDb.WRITE, this);
+	private int mId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,24 +42,13 @@ public class NoteDetail extends Activity implements DatePickerDialog.OnDateSetLi
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		
 		if(-1 != mId) {
-			SQLiteDatabase db = mDb.getReadableDatabase();
-			Cursor cursor;
-			cursor = db.query(NotesDb.TABLE_NAME,
-					new String[] {NotesDb.COLUMN_SUBJECT, NotesDb.COLUMN_DATE, NotesDb.COLUMN_CONTENT},
-					NotesDb._ID + " = ?",
-					new String[] {String.valueOf(mId)},
-					null,
-					null,
-					null,
-					"1");
-			
-			cursor.moveToFirst();
+			Note note = mDb.getNoteById(mId);
 			EditText subject = (EditText) findViewById(R.id.subject);
-			subject.setText(cursor.getString(cursor.getColumnIndex(NotesDb.COLUMN_SUBJECT)));
+			subject.setText(note.subject);
 			
-			date.setText(cursor.getString(cursor.getColumnIndex(NotesDb.COLUMN_DATE)));
+			date.setText(note.date);
 			EditText content = (EditText) findViewById(R.id.content);
-			content.setText(cursor.getString(cursor.getColumnIndex(NotesDb.COLUMN_CONTENT)));
+			content.setText(note.content);
 		}
 		else
 			date.setText(format.format(new Date()));
@@ -120,22 +104,13 @@ public class NoteDetail extends Activity implements DatePickerDialog.OnDateSetLi
 	}
 	
 	public void saveNote() {
-		SQLiteDatabase db = mDb.getWritableDatabase();
-		ContentValues content = new ContentValues();
-		content.put(NotesDb.COLUMN_SUBJECT, ((EditText) findViewById(R.id.subject)).getText().toString());
-		content.put(NotesDb.COLUMN_DATE, ((Button) findViewById(R.id.date)).getText().toString());
-		content.put(NotesDb.COLUMN_CONTENT, ((EditText) findViewById(R.id.content)).getText().toString());
-		if(-1 != mId)
-			db.update(NotesDb.TABLE_NAME, content, NotesDb._ID + " = ?", new String[] {Integer.toString(mId)});
-		else
-			db.insert(NotesDb.TABLE_NAME, null, content);
+		mDb.saveNote(mId, mDb.new Note(((EditText) findViewById(R.id.subject)).getText().toString(),
+				((Button) findViewById(R.id.date)).getText().toString(),
+				((EditText) findViewById(R.id.content)).getText().toString()));
 	}
 
 	private void deleteNote() {
-		if(-1 != mId) {
-			SQLiteDatabase db = mDb.getWritableDatabase();
-			db.delete(NotesDb.TABLE_NAME, NotesDb._ID + " = ?", new String[] {Integer.toString(mId)});
-		}
+		mDb.deleteNote(mId);
 		
 	}
 
