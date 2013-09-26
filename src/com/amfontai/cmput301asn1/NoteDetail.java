@@ -1,3 +1,22 @@
+/*
+ *  This is a part of amfontai Notes
+ *  Copyright (C) 2013 Andrew Fontaine
+ *
+ *  amfontai Notes program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  amfontai Notes program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License along
+ *  with this program; if not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
 package com.amfontai.cmput301asn1;
 
 import java.text.ParseException;
@@ -18,13 +37,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import com.amfontai.cmput301asn1.NotesDb.Note;
 
 @SuppressLint("SimpleDateFormat")
 public class NoteDetail extends Activity implements DatePickerDialog.OnDateSetListener {
 	
 	private NotesDb mDb = new NotesDb(NotesDb.WRITE, this);
 	private int mId;
+	private Note mNote;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +61,18 @@ public class NoteDetail extends Activity implements DatePickerDialog.OnDateSetLi
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		
 		if(-1 != mId) {
-			Note note = mDb.getNoteById(mId);
+			mNote = mDb.getNoteById(mId);
 			EditText subject = (EditText) findViewById(R.id.subject);
-			subject.setText(note.subject);
+			subject.setText(mNote.getSubject());
 			
-			date.setText(note.date);
+			date.setText(mNote.getDate());
 			EditText content = (EditText) findViewById(R.id.content);
-			content.setText(note.content);
+			content.setText(mNote.getContent());
 		}
-		else
+		else {
 			date.setText(format.format(new Date()));
+			mNote = new Note();
+		}
 	}
 
 	/**
@@ -104,13 +125,15 @@ public class NoteDetail extends Activity implements DatePickerDialog.OnDateSetLi
 	}
 	
 	public void saveNote() {
-		mDb.saveNote(mId, mDb.new Note(((EditText) findViewById(R.id.subject)).getText().toString(),
-				((Button) findViewById(R.id.date)).getText().toString(),
-				((EditText) findViewById(R.id.content)).getText().toString()));
+		mNote.setSubject(((EditText) findViewById(R.id.subject)).getText().toString());
+		mNote.setDate(((Button) findViewById(R.id.date)).getText().toString());
+		mNote.setContent(((EditText) findViewById(R.id.content)).getText().toString());
+		mNote.saveNote(mId, mDb);
+		
 	}
 
 	private void deleteNote() {
-		mDb.deleteNote(mId);
+		mNote.deleteNote(mId, mDb);
 		
 	}
 
@@ -146,7 +169,9 @@ public class NoteDetail extends Activity implements DatePickerDialog.OnDateSetLi
 				e.printStackTrace();
 			}
 			
-			return new DatePickerDialog(getActivity(), (NoteDetail) getActivity(), c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE));
+			return new DatePickerDialog(getActivity(),
+					(NoteDetail) getActivity(), c.get(Calendar.YEAR),
+					c.get(Calendar.MONTH), c.get(Calendar.DATE));
 		}
 		
 	}

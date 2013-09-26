@@ -45,10 +45,10 @@ public class NotesDb implements BaseColumns {
 	
 	private static final int MAX_WORDS_CLOUD = 100;
 	private static final double MAX_TEXT_SIZE = 38.0;
-	private static final String TABLE_NAME = "Notes";
-	private static final String COLUMN_SUBJECT = "Subject";
-	private static final String COLUMN_DATE = "Date";
-	private static final String COLUMN_CONTENT = "Content";
+	public static final String TABLE_NAME = "Notes";
+	public static final String COLUMN_SUBJECT = "Subject";
+	public static final String COLUMN_DATE = "Date";
+	public static final String COLUMN_CONTENT = "Content";
 	
 	private NotesDbHelper mDbHelper;
 	private char RW;
@@ -58,7 +58,7 @@ public class NotesDb implements BaseColumns {
 			this.RW = RW;
 	}
 	
-	private SQLiteDatabase getDB() {
+	public SQLiteDatabase getDB() {
 		if(RW == READ)
 			return mDbHelper.getReadableDatabase();
 		else if(RW == WRITE)
@@ -92,25 +92,6 @@ public class NotesDb implements BaseColumns {
 			return new Note(cursor);
 		else
 			return null;
-	}
-	
-	public long saveNote(int id, Note note) {
-		
-		ContentValues content = new ContentValues();
-		content.put(NotesDb.COLUMN_SUBJECT, note.subject);
-		content.put(NotesDb.COLUMN_DATE, note.date);
-		content.put(NotesDb.COLUMN_CONTENT, note.content);
-		if(-1 != id)
-			return getDB().update(NotesDb.TABLE_NAME, content, NotesDb._ID + " = ?", new String[] {Integer.toString(id)});
-		else
-			return getDB().insert(NotesDb.TABLE_NAME, null, content);
-	}
-	
-	public int deleteNote(int id) {
-		if(-1 != id) {
-			return getDB().delete(NotesDb.TABLE_NAME, NotesDb._ID + " = ?", new String[] {Integer.toString(id)});
-		}
-		return -1;
 	}
 	
 	public List<String> getAllWords() {
@@ -255,23 +236,5 @@ public class NotesDb implements BaseColumns {
 		public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			onUpgrade(db, oldVersion, newVersion);
 		}	
-	}
-	
-	public class Note {
-		public String subject;
-		public String date;
-		public String content;
-		
-		Note(Cursor cursor) {
-			subject = cursor.getString(cursor.getColumnIndex(NotesDb.COLUMN_SUBJECT));
-			date = cursor.getString(cursor.getColumnIndex(NotesDb.COLUMN_DATE));
-			content = cursor.getString(cursor.getColumnIndex(NotesDb.COLUMN_CONTENT));
-		}
-		
-		Note(String subject, String date, String content) {
-			this.subject = subject;
-			this.date = date;
-			this.content = content;
-		}
 	}
 }
