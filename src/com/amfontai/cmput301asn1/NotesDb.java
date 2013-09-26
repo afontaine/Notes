@@ -36,28 +36,85 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.widget.SimpleCursorAdapter;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NotesDb controls access to an {@link android.database.SQLiteDatabase}.
+ * It handles all updating, reading, etc.
+ */
 public class NotesDb implements BaseColumns {
 	
+	/**
+	 * Represents the read-only flag
+	 * for returning a read-only database
+	 */
 	public static char READ = 'r';
-	public static char WRITE = 'w';
-	public static int HTML = 1;
-	public static int CSS = 0;
 	
+	/**
+	 * Represents the read-write flag
+	 * for returning a read-write database
+	 */
+	public static char WRITE = 'w';
+	
+	/** 
+	 * The Constant MAX_WORDS_CLOUD represents the total number of words
+	 * to be in the word cloud.
+	 */
 	private static final int MAX_WORDS_CLOUD = 100;
+	
+	/** 
+	 * The Constant MAX_TEXT_SIZE to set the maximum text size
+	 * for the word cloud. 
+	 */
 	private static final double MAX_TEXT_SIZE = 38.0;
+	
+	/** 
+	 * The Constant TABLE_NAME represents the name of
+	 * the table in the database.
+	 */
 	public static final String TABLE_NAME = "Notes";
+	
+	/** The Constant COLUMN_SUBJECT. */
 	public static final String COLUMN_SUBJECT = "Subject";
+	
+	/** The Constant COLUMN_DATE. */
 	public static final String COLUMN_DATE = "Date";
+	
+	/** The Constant COLUMN_CONTENT. */
 	public static final String COLUMN_CONTENT = "Content";
 	
+	/** 
+	 * mDbHelper is an instance of {@link NotesDbHelper}
+	 * that is the layer above the {@link android.database.SQLiteDatabase}.
+	 * It handles memory, context, and access.
+	 */
 	private NotesDbHelper mDbHelper;
+	
+	/** 
+	 * A flag that sets whether we need
+	 * a read-only DB or a read-write DB.
+	 * 
+	 * We use this in the event where there's no room
+	 * to write to the database. This way, functions that
+	 * only read things from the DB will still function.
+	 */
 	private char RW;
 	
+	/**
+	 * Instantiates a new NotesDb.
+	 *
+	 * @param RW the read-write flag
+	 * @param context The context of the Activity
+	 */
 	public NotesDb (char RW, Context context) {
 			mDbHelper  = new NotesDbHelper(context);	
 			this.RW = RW;
 	}
 	
+	/**
+	 * Gets either a readable or writeable database.
+	 *
+	 * @return {@link android.database.SQLiteDatabase} The Database
+	 */
 	public SQLiteDatabase getDB() {
 		if(RW == READ)
 			return mDbHelper.getReadableDatabase();
@@ -67,7 +124,13 @@ public class NotesDb implements BaseColumns {
 			return null;
 	}
 
-	public Cursor getNotesByDate() {
+	/**
+	 * Gets the notes by date as an SQL Cursor.
+	 * Used by {@link listNotes} to get a {@link android.widget.SimpleCursorAdapter}
+	 *
+	 * @return the notes by date
+	 */
+	private Cursor getNotesByDate() {
 		return getDB().query(
 				NotesDb.TABLE_NAME,
 				new String[] {NotesDb._ID, NotesDb.COLUMN_SUBJECT, NotesDb.COLUMN_DATE},
@@ -78,6 +141,12 @@ public class NotesDb implements BaseColumns {
 				NotesDb.COLUMN_DATE + " DESC");
 	}
 	
+	/**
+	 * Gets the note by row ID
+	 *
+	 * @param id the ID of the note
+	 * @return a Note with the row id or null if it doesn't exist
+	 */
 	public Note getNoteById(int id) {
 		Cursor cursor;
 		cursor = getDB().query(NotesDb.TABLE_NAME,
@@ -94,6 +163,11 @@ public class NotesDb implements BaseColumns {
 			return null;
 	}
 	
+	/**
+	 * Gets the all words.
+	 *
+	 * @return the all words
+	 */
 	public List<String> getAllWords() {
 		Cursor all = getDB().query(NotesDb.TABLE_NAME, 
 				new String[] {NotesDb.COLUMN_SUBJECT, NotesDb.COLUMN_CONTENT},
@@ -115,6 +189,11 @@ public class NotesDb implements BaseColumns {
 		}
 	}
 	
+	/**
+	 * Gets the word cloud.
+	 *
+	 * @return the word cloud
+	 */
 	public String getWordCloud() {
 		Cloud wordCloud = new Cloud();
 		wordCloud.setMaxWeight(MAX_TEXT_SIZE);
@@ -128,10 +207,20 @@ public class NotesDb implements BaseColumns {
 		return (!wordCloud.tags().isEmpty()) ? html.html(wordCloud) : "<span>Add some notes to make a word cloud!</span>";
 	}
 	
+	/**
+	 * Total entries.
+	 *
+	 * @return the long
+	 */
 	public long totalEntries() {
 		return DatabaseUtils.queryNumEntries(getDB(), NotesDb.TABLE_NAME);
 	}
 	
+	/**
+	 * Total characters.
+	 *
+	 * @return the long
+	 */
 	public long totalCharacters() {
 		Cursor all = getDB().query(NotesDb.TABLE_NAME, 
 				new String[] {NotesDb.COLUMN_SUBJECT, NotesDb.COLUMN_CONTENT},
@@ -148,10 +237,20 @@ public class NotesDb implements BaseColumns {
 		return results.length();
 	}
 	
+	/**
+	 * Total words.
+	 *
+	 * @return the total number of words
+	 */
 	public long totalWords() {
 		return getAllWords().size();
 	}
 	
+	/**
+	 * Top one hundred most frequent words.
+	 *
+	 * @return the array list containing the top one hundred frequent words
+	 */
 	public ArrayList<String> topHundred() {
 		List<String> words = getAllWords();
 		
@@ -167,6 +266,13 @@ public class NotesDb implements BaseColumns {
 		return recursiveSort(wordMap, new ArrayList<String>());
 	}
 	
+	/**
+	 * Recursive sort.
+	 *
+	 * @param wordMap the word map containing all words and their frequencies
+	 * @param results the array list so far
+	 * @return the array list containing all words, sorted by frequency descending
+	 */
 	private ArrayList<String> recursiveSort(HashMap<String, Integer> wordMap, ArrayList<String> results) {
 		if(results.size() > 99 || wordMap.isEmpty()) 
 			return results;
@@ -187,6 +293,12 @@ public class NotesDb implements BaseColumns {
 		return recursiveSort(wordMap, results);
 	}
 	
+	/**
+	 * List notes.
+	 *
+	 * @param context the context
+	 * @return the simple cursor adapter
+	 */
 	public SimpleCursorAdapter listNotes(Context context) {
 		return new SimpleCursorAdapter(
 				context,
@@ -197,26 +309,47 @@ public class NotesDb implements BaseColumns {
 				0);
 	}
 
+	/**
+	 * The Class NotesDbHelper.
+	 */
 	private class NotesDbHelper extends SQLiteOpenHelper {
 
-		public static final int DATABASE_VERSION = 4;
+		/** The Constant DATABASE_VERSION. */
+		public static final int DATABASE_VERSION = 1;
+		
+		/** The Constant DATABASE_NAME. */
 		public static final String DATABASE_NAME = "Notes.db";
 		
+		/** The Constant TEXT_TYPE. */
 		private static final String TEXT_TYPE = " TEXT";
+		
+		/** The Constant COMMA_SEP. */
 		private static final String COMMA_SEP = ", ";
+		
+		/** The Constant SQL_CREATE_TABLE. */
 		private static final String SQL_CREATE_TABLE = 
 				"CREATE TABLE " + NotesDb.TABLE_NAME + " ("
 				+ NotesDb._ID + " INTEGER PRIMARY KEY" + COMMA_SEP
 				+ NotesDb.COLUMN_SUBJECT + TEXT_TYPE + COMMA_SEP
 				+ NotesDb.COLUMN_DATE + TEXT_TYPE + COMMA_SEP
 				+ NotesDb.COLUMN_CONTENT + TEXT_TYPE + " )";
+		
+		/** The Constant SQL_DELETE_TABLE. */
 		private static final String SQL_DELETE_TABLE = 
 				"DROP TABLE IF EXISTS " + NotesDb.TABLE_NAME;
 				
+		/**
+		 * Instantiates a new NotesDbHelper.
+		 *
+		 * @param context the context
+		 */
 		public NotesDbHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		}
 
+		/**
+		 * @see android.database.sqlite.SQLiteOpenHelper#onCreate(android.database.sqlite.SQLiteDatabase)
+		 */
 		@Override
 		public void onCreate(SQLiteDatabase arg0) {
 			arg0.execSQL(SQL_CREATE_TABLE);
@@ -227,12 +360,18 @@ public class NotesDb implements BaseColumns {
 			arg0.insert(TABLE_NAME, null, c);
 		}
 
+		/**
+		 * @see android.database.sqlite.SQLiteOpenHelper#onUpgrade(android.database.sqlite.SQLiteDatabase, int, int)
+		 */
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			db.execSQL(SQL_DELETE_TABLE);
 			db.execSQL(SQL_CREATE_TABLE);
 		}
 		
+		/**
+		 * @see android.database.sqlite.SQLiteOpenHelper#onDowngrade(android.database.sqlite.SQLiteDatabase, int, int)
+		 */
 		public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			onUpgrade(db, oldVersion, newVersion);
 		}	

@@ -26,10 +26,23 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.support.v4.app.NavUtils;
 
+/**
+ * The Class WordCloud represents the {@link andorid.app.Activity}
+ * containing a word cloud created with {@link import org.mcavallo.opencloud}.
+ * It uses a {@link android.webkit.WebView}, which is defined
+ * in activity_word_cloud.xml
+ */
 public class WordCloud extends Activity {
 		
+	/**
+	 * mDb is an instance of (@link NotesDb}, which controls
+	 * access to the {@link android.database.SQLiteDatabase}.
+	 */
 	private NotesDb mDb = new NotesDb(NotesDb.READ, this);
 
+	/**
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,6 +51,12 @@ public class WordCloud extends Activity {
 		setupActionBar();
 	}
 	
+	/**
+	 * On resuming the activity, we query the DB,
+	 * which uses {@link import org.mcavallo.opencloud}
+	 * to generate the HTML for the WebView
+	 * @see android.app.Activity#onResume()
+	 */
 	protected void onResume() {
 		super.onResume();
 		
@@ -57,6 +76,9 @@ public class WordCloud extends Activity {
 
 	}
 
+	/**
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -64,6 +86,9 @@ public class WordCloud extends Activity {
 		return true;
 	}
 
+	/**
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

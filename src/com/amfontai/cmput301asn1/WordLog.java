@@ -26,22 +26,39 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
+/**
+ * This is the WordLog activity, which shows
+ * all statistics relating to the notes in
+ * the database. It contains 3 text views,
+ * defined in activity_word_cloud.xml. The
+ * actual counts, however, are generated
+ * when the activity is created
+ */
 public class WordLog extends Activity {
 
+	/**
+	 * mDb is an instance of (@link NotesDb}, which controls
+	 * access to the {@link android.database.SQLiteDatabase}.
+	 */
 	private NotesDb mDb = new NotesDb(NotesDb.READ, this);
 	
+	/**
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_word_log);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		
+		// Here we get the views from the layout file
 		TextView characters = (TextView) findViewById(R.id.characters);
 		TextView words = (TextView) findViewById(R.id.words);
 		TextView logs = (TextView) findViewById(R.id.logs);
 		TextView topHundred = (TextView) findViewById(R.id.top);
-		
+		/* Here we query the DB for the statistics and 
+		 * add them to the displayed string
+		 */
 		characters.setText(characters.getText() + " " + Long.toString(mDb.totalCharacters()));
 		words.setText(words.getText() + " " + Long.toString(mDb.totalWords()));
 		logs.setText(logs.getText() + " " + Long.toString(mDb.totalEntries()));
@@ -58,6 +75,9 @@ public class WordLog extends Activity {
 
 	}
 
+	/**
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -65,6 +85,9 @@ public class WordLog extends Activity {
 		return true;
 	}
 
+	/**
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

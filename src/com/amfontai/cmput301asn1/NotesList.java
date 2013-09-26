@@ -28,20 +28,43 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+/**
+ * The Class NotesList represents an {@link android.app.ListActivity}
+ * that lists all the Notes that are saved in the DB.
+ * The Notes are listed in order of most recent date
+ * (but the order is set by the {@link NotesDb} class).
+ * The {@link android.widget.ListAdapter} is a {@link android.widget.SimpleCursorAdapter}
+ * returned to the activity by the DB. The list view is
+ * defined in activity_notes_list.xml
+ */
 public class NotesList extends ListActivity {
 	
+	/**
+	 * mDb is an instance of (@link NotesDb}, which controls
+	 * access to the {@link android.database.SQLiteDatabase}.
+	 */
 	private NotesDb mDb = new NotesDb(NotesDb.READ, this);
 
+	/**
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_notes_list);
 	}
 	
+	/**
+	 * List notes by setting the {@link android.widget.ListAdapter}
+	 * to a {@link android.widget.SimpleCursorAdapter}, returned by the {@link NotesDb}.
+	 */
 	private void listNotes() {		
 		setListAdapter(mDb.listNotes(this));
 	}
 
+	/**
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -49,6 +72,12 @@ public class NotesList extends ListActivity {
 		return true;
 	}
 	
+	/**
+	 * Checks to see which menu item on the {@link android.view.Menu}
+	 * was clicked and opens the appropriate window.
+	 * 
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menu) {
 		switch(menu.getItemId()) {
@@ -67,6 +96,9 @@ public class NotesList extends ListActivity {
 				
 	}
 	
+	/**
+	 * @see android.app.Activity#onResume()
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -74,6 +106,11 @@ public class NotesList extends ListActivity {
 		
 	}
 	
+	/**
+	 * Opens an instance of {@link NoteDetail} without passing
+	 * an ID through the intent. This starts the {@link NoteDetail} window
+	 * with the default information, equivalent to making a new note.
+	 */
 	private void openNew() {
 		
 		Intent intent = new Intent(this, NoteDetail.class);
@@ -81,18 +118,33 @@ public class NotesList extends ListActivity {
 		
 	}
 
+	/**
+	 * Opens an instance of {@link WordCloud}
+	 */
 	private void openWordCloud() {
 		Intent intent = new Intent(this, WordCloud.class);
 		startActivity(intent);
 		
 	}
 
+	/**
+	 * Opens an instance of {@link WordLog}.
+	 */
 	private void openLog() {
 		Intent intent = new Intent(this, WordLog.class);
 		startActivity(intent);
 		
 	}
 
+	/**
+	 * Opens an instance of {@link NoteDetail} and passes
+	 * the {@link android.database.SQLiteDatabase} ID of the
+	 * {@link Note} selected. The new window will query the
+	 * database to fill in the form with the saved information.
+	 * This is equivalent to editing a Note.
+	 * 
+	 * @see android.app.ListActivity#onListItemClick(android.widget.ListView, android.view.View, int, long)
+	 */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Intent intent = new Intent(this, NoteDetail.class);
