@@ -22,7 +22,6 @@ package com.amfontai.cmput301asn1;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Note.
  */

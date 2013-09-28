@@ -15,6 +15,9 @@
  *  You should have received a copy of the GNU General Public License along
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ *  SQLiteOpenHelper code adapted from
+ *  http://developer.android.com/training/basics/data-storage/databases.html
  */
 
 package com.amfontai.cmput301asn1;
@@ -36,7 +39,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.widget.SimpleCursorAdapter;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class NotesDb controls access to an {@link android.database.SQLiteDatabase}.
  * It handles all updating, reading, etc.
