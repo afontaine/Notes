@@ -40,7 +40,7 @@ import android.provider.BaseColumns;
 import android.widget.SimpleCursorAdapter;
 
 /**
- * The Class NotesDb controls access to an {@link android.database.SQLiteDatabase}.
+ * The Class NotesDb controls access to an {@link android.database.sqlite.SQLiteDatabase}.
  * It handles all updating, reading, etc.
  */
 public class NotesDb implements BaseColumns {
@@ -86,7 +86,7 @@ public class NotesDb implements BaseColumns {
 	
 	/** 
 	 * mDbHelper is an instance of {@link NotesDbHelper}
-	 * that is the layer above the {@link android.database.SQLiteDatabase}.
+	 * that is the layer above the {@link android.database.sqlite.SQLiteDatabase}.
 	 * It handles memory, context, and access.
 	 */
 	private NotesDbHelper mDbHelper;
@@ -113,9 +113,9 @@ public class NotesDb implements BaseColumns {
 	}
 	
 	/**
-	 * Gets either a readable or writeable database.
+	 * Gets either a readable or writable database.
 	 *
-	 * @return {@link android.database.SQLiteDatabase} The Database
+	 * @return {@link android.database.sqlite.SQLiteDatabase} The Database
 	 */
 	public SQLiteDatabase getDB() {
 		if(RW == READ)
