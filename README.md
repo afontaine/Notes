@@ -11,25 +11,28 @@ parsecs. I added a save button just for you folks you don't believe in
 
 SOURCES
 =======
-	Any code that came from external sources was from the Android Developer site
-	and its included documentation and tutorials.
-	http://developer.android.com/index.html
+Any code that came from external sources was from the Android Developer site
+and its included documentation and tutorials.
+http://developer.android.com/index.html
 
 AUTHORS
 =======
-	Andrew Fontaine
+Andrew Fontaine
 
 LICENSE
 =======
-	Copyright  ©  2013 Andrew Fontaine,  Free Software Foundation, Inc.
-	License GPLv2+: GNU GPL version 2 or later
-	<http://gnu.org/licenses/gpl.html>. This is free software: you are free to
-	change  and  redistribute  it. There is NO WARRANTY, to the extent
-	permitted by law.
+Copyright  ©  2013 Andrew Fontaine,  Free Software Foundation, Inc.
+License GPLv2+: GNU GPL version 2 or later
+<http://gnu.org/licenses/gpl.html>. This is free software: you are free to
+change  and  redistribute  it. There is NO WARRANTY, to the extent
+permitted by law.
 	
 Third Party Libraries
 =====================
-	amfontai Notes uses the following libraries:
-		* Android and the Android SDK (of course)
-		  http://developer.android.com/index.html
-		* OpenCloud (For that slick word cloud) http://opencloud.mcavallo.org/
+amfontai Notes uses the following libraries:
+* Android and the Android SDK (of course)
+
+  http://developer.android.com/index.html
+* OpenCloud (For that slick word cloud)
+
+  http://opencloud.mcavallo.org/
