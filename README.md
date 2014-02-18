@@ -1,6 +1,7 @@
-amfontai Notes
+Notes
 ==============
-amfontai Notes is a simple, straight-forward note-taking app.
+Originally a [CMPUT 301](https://www.cs.ualberta.ca/undergraduate-students/course-directory/introduction-software-engineering)
+assignment, Notes is a simple, straight-forward note-taking app.
 Hit the pencil to add a note! Hit a note to edit a note!
 Hit the cloud to get a word cloud of all the words in your note!
 (word cloud. such web 2.0)
